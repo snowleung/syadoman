@@ -40,11 +40,15 @@ class SonyPlayList(object):
                     contents.append('{}\n'.format(music_path))
             if contents: self._save_m3u8(filename, contents)
                 
+import argparse
+DOC= '''Create Playlist for Sony Media player'''
 
 if __name__ == '__main__':
-    #/Volumes/WALKMAN/MUSIC
-    _dir = '/Volumes/WALKMAN/Music'
-    #_dir = '/Users/saml/workspace/labs/p'
-    sp = SonyPlayList(_dir, '/Users/saml/Desktop/Playlists')
+    parser = argparse.ArgumentParser(description=DOC)
+    parser.add_argument('src', type=str, help='Source Directory')
+    parser.add_argument('dest', type=str, help='Playlist Save Directory')
+    args =parser.parse_args()
+    _dir = args.src
+    sp = SonyPlayList(_dir, args.dest)
     sp.build_playlist(os.path.split(_dir)[-1])
 
