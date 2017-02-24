@@ -1,4 +1,4 @@
-#coding:utf-8
+#!/usr/bin/python
 
 import os
 
@@ -17,6 +17,9 @@ class SonyPlayList(object):
     def _music_path(self, device_path, filename):
         return '/{}'.format(os.path.join(device_path, filename))
 
+    def _m3u8_name(self, path, ext='m3u8'):
+        return '{}.{}'.format(path.replace('/', '_'), ext)
+
     def _save_m3u8(self, filename, contents):
         save_path = os.path.join(self.save_dir, filename)
         if os.path.exists(save_path):
@@ -32,7 +35,7 @@ class SonyPlayList(object):
             relative_path = dirpath[dirpath.rindex(_top_dir):]
             for _file in filenames:
                 if _file.split('.')[-1] in DETERMINE_EXT:
-                    filename = '{}.{}'.format(relative_path.replace('/', '_'), 'm3u8')
+                    filename = self._m3u8_name(relative_path)
                     music_path = self._window_slant(self._music_path(relative_path, _file))
                     contents.append('{}\n'.format(music_path))
             if contents: self._save_m3u8(filename, contents)
@@ -40,8 +43,8 @@ class SonyPlayList(object):
 
 if __name__ == '__main__':
     #/Volumes/WALKMAN/MUSIC
-    _dir = '/Volumes/WALKMAN/MUSIC'
+    _dir = '/Volumes/WALKMAN/Music'
     #_dir = '/Users/saml/workspace/labs/p'
-    sp = SonyPlayList(_dir, '/Users/saml/Desktop/Playlists2')
+    sp = SonyPlayList(_dir, '/Users/saml/Desktop/Playlists')
     sp.build_playlist(os.path.split(_dir)[-1])
 
